@@ -17,7 +17,30 @@ class ToDoTableViewController: UITableViewController {
 extension ToDoTableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
-        todos = ToDo.load() ?? []
+        todos = ToDo.loadData() ?? []
+    }
+}
+
+// MARK: - ... Navigation
+extension ToDoTableViewController {
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        guard segue.identifier == "ToDoItemSegue" else { return }
+        guard let index = tableView.indexPathForSelectedRow?.row else { return }
+        
+        let todo = todos[index]
+        
+        let destination = segue.destination as! ToDoItemTableViewController
+        destination.todo = todo
+        destination.navigationItem.title = "Edit"
+    }
+    
+    @IBAction func unwind(segue: UIStoryboardSegue) {
+        guard segue.identifier == "SaveSegue" else { return }
+        
+        let source = segue.source as! ToDoItemTableViewController
+        let todo = source.todo
+        
+        print(#function, todo)
     }
 }
 
