@@ -8,7 +8,7 @@
 
 import Foundation
 
-@objcMembers class ToDo: NSObject {
+@objcMembers class ToDo: NSObject, Codable {
     
     var title: String
     var isComplete: Bool
@@ -28,24 +28,7 @@ import Foundation
     }
     
     var capitilizedKeys: [String] {
-        let nonCapitalized = Mirror(reflecting: self).children.compactMap { $0.label }
-        
-        var words = [String]()
-        
-        nonCapitalized.forEach { word in
-            var splitWord = ""
-            
-            for character in word {
-                if String(character) == String(character).localizedUppercase {
-                    splitWord += " "
-                }
-                splitWord += "\(character)"
-            }
-            
-            words += [splitWord.localizedCapitalized]
-        }
-        
-        return words
+        return keys.map {  $0.capitilizedWithSpaces }
     }
     
     var keys: [String] {
