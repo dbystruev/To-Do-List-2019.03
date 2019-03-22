@@ -17,6 +17,8 @@
 		69359D1C222EF93300B73176 /* ToDo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 69359D1B222EF93300B73176 /* ToDo.swift */; };
 		69359D1F222EF9A600B73176 /* ToDoTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 69359D1E222EF9A600B73176 /* ToDoTableViewController.swift */; };
 		69359D23222EFFA600B73176 /* ToDoItemTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 69359D22222EFFA600B73176 /* ToDoItemTableViewController.swift */; };
+		69710A60224555590055E09F /* CloudKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 69710A5F224555590055E09F /* CloudKit.framework */; };
+		69710A62224570680055E09F /* ImageCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 69710A61224570670055E09F /* ImageCell.swift */; };
 		6972FD5D224159DB009BB87C /* String+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6972FD5C224159DB009BB87C /* String+Extension.swift */; };
 		6972FD5F22415ACA009BB87C /* Character+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6972FD5E22415ACA009BB87C /* Character+Extension.swift */; };
 		6972FD6122415F86009BB87C /* DatePickerCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6972FD6022415F86009BB87C /* DatePickerCell.swift */; };
@@ -37,6 +39,9 @@
 		69359D1B222EF93300B73176 /* ToDo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToDo.swift; sourceTree = "<group>"; };
 		69359D1E222EF9A600B73176 /* ToDoTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToDoTableViewController.swift; sourceTree = "<group>"; };
 		69359D22222EFFA600B73176 /* ToDoItemTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToDoItemTableViewController.swift; sourceTree = "<group>"; };
+		69710A5D224555500055E09F /* To Do List.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "To Do List.entitlements"; sourceTree = "<group>"; };
+		69710A5F224555590055E09F /* CloudKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CloudKit.framework; path = System/Library/Frameworks/CloudKit.framework; sourceTree = SDKROOT; };
+		69710A61224570670055E09F /* ImageCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageCell.swift; sourceTree = "<group>"; };
 		6972FD5C224159DB009BB87C /* String+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+Extension.swift"; sourceTree = "<group>"; };
 		6972FD5E22415ACA009BB87C /* Character+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Character+Extension.swift"; sourceTree = "<group>"; };
 		6972FD6022415F86009BB87C /* DatePickerCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DatePickerCell.swift; sourceTree = "<group>"; };
@@ -49,6 +54,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				69710A60224555590055E09F /* CloudKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -60,6 +66,7 @@
 			children = (
 				69359D07222EF8A500B73176 /* To Do List */,
 				69359D06222EF8A500B73176 /* Products */,
+				69710A5E224555590055E09F /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -74,6 +81,7 @@
 		69359D07222EF8A500B73176 /* To Do List */ = {
 			isa = PBXGroup;
 			children = (
+				69710A5D224555500055E09F /* To Do List.entitlements */,
 				6972FD5B224159B9009BB87C /* Extensions */,
 				69359D1A222EF91F00B73176 /* Model */,
 				69359D21222EF9E500B73176 /* View */,
@@ -118,10 +126,19 @@
 				6901D33A223830CD00B6D8E6 /* DateCell.swift */,
 				6972FD6422417170009BB87C /* DatePicker.swift */,
 				6972FD6022415F86009BB87C /* DatePickerCell.swift */,
+				69710A61224570670055E09F /* ImageCell.swift */,
 				6901D3382238308500B6D8E6 /* SwitchCell.swift */,
 				6901D3362238306700B6D8E6 /* TextFieldCell.swift */,
 			);
 			path = View;
+			sourceTree = "<group>";
+		};
+		69710A5E224555590055E09F /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				69710A5F224555590055E09F /* CloudKit.framework */,
+			);
+			name = Frameworks;
 			sourceTree = "<group>";
 		};
 		6972FD5B224159B9009BB87C /* Extensions */ = {
@@ -166,6 +183,14 @@
 				TargetAttributes = {
 					69359D04222EF8A500B73176 = {
 						CreatedOnToolsVersion = 10.1;
+						SystemCapabilities = {
+							com.apple.Push = {
+								enabled = 1;
+							};
+							com.apple.iCloud = {
+								enabled = 1;
+							};
+						};
 					};
 				};
 			};
@@ -212,6 +237,7 @@
 				6972FD6322416C59009BB87C /* IndexPath+Extension.swift in Sources */,
 				69359D1F222EF9A600B73176 /* ToDoTableViewController.swift in Sources */,
 				6901D3392238308500B6D8E6 /* SwitchCell.swift in Sources */,
+				69710A62224570680055E09F /* ImageCell.swift in Sources */,
 				69359D1C222EF93300B73176 /* ToDo.swift in Sources */,
 				6972FD5F22415ACA009BB87C /* Character+Extension.swift in Sources */,
 				6901D3372238306700B6D8E6 /* TextFieldCell.swift in Sources */,
@@ -362,6 +388,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = "To Do List/To Do List.entitlements";
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 8J39KF9DMS;
 				INFOPLIST_FILE = "$(SRCROOT)/To Do List/Supporting Files/Info.plist";
@@ -369,7 +396,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = "ru.learnSwift.To-Do-List";
+				PRODUCT_BUNDLE_IDENTIFIER = "ru.learnSwift.To-Do-List-Cloud";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 4.2;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -380,6 +407,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = "To Do List/To Do List.entitlements";
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 8J39KF9DMS;
 				INFOPLIST_FILE = "$(SRCROOT)/To Do List/Supporting Files/Info.plist";
@@ -387,7 +415,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = "ru.learnSwift.To-Do-List";
+				PRODUCT_BUNDLE_IDENTIFIER = "ru.learnSwift.To-Do-List-Cloud";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 4.2;
 				TARGETED_DEVICE_FAMILY = "1,2";

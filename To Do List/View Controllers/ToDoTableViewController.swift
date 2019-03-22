@@ -17,7 +17,17 @@ class ToDoTableViewController: UITableViewController {
 extension ToDoTableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
-        todos = ToDo.loadData() ?? []
+        
+        ToDo.loadFromCloudKit { todos in
+            if let todos = todos {
+                self.todos = todos
+            } else {
+                self.todos = []
+            }
+            DispatchQueue.main.async {
+                self.tableView.reloadData()
+            }
+        }
     }
 }
 
@@ -81,5 +91,7 @@ extension ToDoTableViewController {
         let dateText = formatter.string(from: todo.dueDate)
         
         cell.detailTextLabel?.text = dateText
+        
+//        cell.imageView?.image = todo.image
     }
 }

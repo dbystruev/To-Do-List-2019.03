@@ -6,25 +6,29 @@
 //  Copyright © 2019 Denis Bystruev. All rights reserved.
 //
 
-import Foundation
+import CloudKit
+import UIKit
 
-@objcMembers class ToDo: NSObject, Codable {
+@objcMembers class ToDo: NSObject {
     
     var title: String
     var isComplete: Bool
     var dueDate: Date
     var notes: String?
+    var image: UIImage?
     
     init(
         title: String = String(),
         isComplete: Bool = Bool(),
         dueDate: Date = Date(),
-        notes: String? = nil
+        notes: String? = String(),
+        image: UIImage? = UIImage()
     ) {
         self.title = title
         self.isComplete = isComplete
         self.dueDate = dueDate
         self.notes = notes
+        self.image = image
     }
     
     var capitilizedKeys: [String] {
@@ -63,6 +67,57 @@ extension ToDo/*: CustomStringConvertible*/ {
         }
         
         return result
+    }
+}
+
+// MARK: - ... CloudKit
+extension ToDo {
+    convenience init?(record: CKRecord) {
+        self.init()
+        
+        for (index, key) in self.keys.enumerated() {
+            
+            let value = self.values[index]
+            let newValue = record.object(forKey: key)
+            print(#function, "key =", key)
+            
+            if value is String || value is String? {
+                guard let newValue = newValue as? String else { return nil }
+                self.setValue(newValue, forKey: key)
+            } else if value is Bool {
+                guard let newValue = newValue as? Int else { return nil }
+                self.setValue(newValue != 0, forKey: key)
+            } else if value is Date {
+                guard let newValue = newValue as? Date else { return nil }
+                self.setValue(newValue, forKey: key)
+            } else if value is UIImage? {
+                guard let imageAsset = newValue as? CKAsset else { return nil }
+                guard let imageData = try? Data(contentsOf: imageAsset.fileURL) else { return nil }
+                guard let image = UIImage(data: imageData) else { return nil }
+                self.setValue(image, forKey: key)
+            } else {
+                print(#function, "Unknown field type on line \(#line)")
+                return nil
+            }
+        }
+    }
+    
+    static func loadFromCloudKit(completion: @escaping ([ToDo]?) -> Void) {
+        let cloudContainer = CKContainer.default()
+        let publicDatabase = cloudContainer.publicCloudDatabase
+        let predicate = NSPredicate(value: true)
+        let query = CKQuery(recordType: "ToDo", predicate: predicate)
+    
+        publicDatabase.perform(query, inZoneWith: nil) { results, _ in
+            guard let results = results else {
+                completion(nil)
+                return
+            }
+            
+            let todos = results.compactMap { ToDo(record: $0) }
+            print(#function, "todos.count =", todos.count)
+            completion(todos)
+        }
     }
 }
 

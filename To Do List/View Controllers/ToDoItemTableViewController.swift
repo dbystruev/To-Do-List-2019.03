@@ -54,7 +54,7 @@ extension ToDoItemTableViewController/*: UITableViewDelegate*/ {
     }
     
     override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        guard isItDatePickerCell(at: indexPath) else { return 44 }
+        guard isItDatePickerCell(at: indexPath) || isItImageCell(at: indexPath) else { return 44 }
         guard let cell = tableView.cellForRow(at: indexPath) else { return 44 }
         
         return cell.isHidden ? 0 : 200
@@ -76,6 +76,11 @@ extension ToDoItemTableViewController {
     func isItDatePickerCell(at indexPath: IndexPath) -> Bool {
         guard let cell = tableView.cellForRow(at: indexPath) else { return false }
         return cell is DatePickerCell
+    }
+    
+    func isItImageCell(at indexPath: IndexPath) -> Bool {
+        guard let cell = tableView.cellForRow(at: indexPath) else { return false }
+        return cell is ImageCell
     }
     
     func configureCellFor(indexPath: IndexPath, with value: Any?) -> UITableViewCell {
@@ -112,6 +117,11 @@ extension ToDoItemTableViewController {
                 return cell
             }
             
+        } else if let imageValue = value as? UIImage? {
+            
+            let cell = tableView.dequeueReusableCell(withIdentifier: "ImageCell") as! ImageCell
+            cell.largeImageView.image = imageValue
+            return cell
             
         } else {
             
@@ -140,7 +150,7 @@ extension ToDoItemTableViewController {
             let cell = tableView.cellForRow(at: indexPath)
             let value = todo.values[index]
             
-            if value is String {
+            if value is String || value is String? {
                 
                 let textFieldCell = cell as! TextFieldCell
                 let value = textFieldCell.textField.text
@@ -168,10 +178,8 @@ extension ToDoItemTableViewController {
                 
             } else {
                 
-                let textFieldCell = cell as! TextFieldCell
-                let value = textFieldCell.textField.text
+                print(#function, "Can't find cell type at line \(#line)")
                 
-                todo.setValue(value, forKey: key)
             }
         }
     }

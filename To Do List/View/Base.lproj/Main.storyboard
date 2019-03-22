@@ -18,7 +18,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <prototypes>
-                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" reuseIdentifier="ToDoCell" textLabel="pWe-bc-XRM" detailTextLabel="2Cg-bi-K58" style="IBUITableViewCellStyleValue1" id="QdA-r7-CKT">
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" reuseIdentifier="ToDoCell" textLabel="pWe-bc-XRM" detailTextLabel="2Cg-bi-K58" imageView="Vha-qJ-xOG" style="IBUITableViewCellStyleValue1" id="QdA-r7-CKT">
                                 <rect key="frame" x="0.0" y="28" width="375" height="44"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="QdA-r7-CKT" id="cK3-vm-kwS">
@@ -39,6 +39,10 @@
                                             <nil key="textColor"/>
                                             <nil key="highlightedColor"/>
                                         </label>
+                                        <imageView hidden="YES" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleAspectFit" insetsLayoutMarginsFromSafeArea="NO" id="Vha-qJ-xOG">
+                                            <rect key="frame" x="16" y="0.0" width="68" height="43.5"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                        </imageView>
                                     </subviews>
                                 </tableViewCellContentView>
                                 <connections>
@@ -183,6 +187,28 @@
                                 </tableViewCellContentView>
                                 <connections>
                                     <outlet property="datePicker" destination="xCi-h0-aN4" id="kBA-y0-0Cw"/>
+                                </connections>
+                            </tableViewCell>
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="ImageCell" rowHeight="200" id="ltE-df-Hjq" customClass="ImageCell" customModule="To_Do_List" customModuleProvider="target">
+                                <rect key="frame" x="0.0" y="387.5" width="375" height="200"/>
+                                <autoresizingMask key="autoresizingMask"/>
+                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="ltE-df-Hjq" id="acg-rw-VAI">
+                                    <rect key="frame" x="0.0" y="0.0" width="375" height="199.5"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                    <subviews>
+                                        <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="myE-Bs-cM4">
+                                            <rect key="frame" x="16" y="11" width="343" height="178"/>
+                                        </imageView>
+                                    </subviews>
+                                    <constraints>
+                                        <constraint firstAttribute="bottomMargin" secondItem="myE-Bs-cM4" secondAttribute="bottom" id="Fhb-Ik-eMK"/>
+                                        <constraint firstAttribute="trailingMargin" secondItem="myE-Bs-cM4" secondAttribute="trailing" id="K9E-ZZ-oi6"/>
+                                        <constraint firstItem="myE-Bs-cM4" firstAttribute="top" secondItem="acg-rw-VAI" secondAttribute="topMargin" id="XxE-4E-uf2"/>
+                                        <constraint firstItem="myE-Bs-cM4" firstAttribute="leading" secondItem="acg-rw-VAI" secondAttribute="leadingMargin" id="ynE-cZ-R4V"/>
+                                    </constraints>
+                                </tableViewCellContentView>
+                                <connections>
+                                    <outlet property="largeImageView" destination="myE-Bs-cM4" id="6OG-xP-ruf"/>
                                 </connections>
                             </tableViewCell>
                         </prototypes>
