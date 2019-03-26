@@ -6,10 +6,12 @@
 //  Copyright © 2019 Denis Bystruev. All rights reserved.
 //
 
+import Photos
 import UIKit
 
 // MARK: - ... Properties
 class ToDoItemTableViewController: UITableViewController {
+    var imagePickerCell: ImageCell?
     var todo = ToDo()
 }
 
@@ -45,21 +47,43 @@ extension ToDoItemTableViewController/*: UITableViewDelegate*/ {
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
         
-        guard isItDateCell(at: indexPath) else { return }
-        guard let cell = tableView.cellForRow(at: indexPath.nextRow) else { return }
-        
-        cell.isHidden.toggle()
-        tableView.beginUpdates()
-        tableView.endUpdates()
+        if isDateCell(at: indexPath) {
+            guard let cell = tableView.cellForRow(at: indexPath.nextRow) else { return }
+            
+            cell.isHidden.toggle()
+            tableView.beginUpdates()
+            tableView.endUpdates()
+        } else if isImageCell(at: indexPath) {
+            guard let cell = tableView.cellForRow(at: indexPath) as? ImageCell else { return }
+            camera(cell: cell)
+        }
     }
     
     override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        guard isItDatePickerCell(at: indexPath) || isItImageCell(at: indexPath) else { return 44 }
+        guard isDatePickerCell(at: indexPath) || isImageCell(at: indexPath) else { return 44 }
         guard let cell = tableView.cellForRow(at: indexPath) else { return 44 }
         
         return cell.isHidden ? 0 : 200
     }
 }
+
+// MARK: - ... UIImagePickerControllerDelegate
+extension ToDoItemTableViewController: UIImagePickerControllerDelegate {
+    @objc func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
+        
+        guard let imagePickerCell = imagePickerCell else { return }
+        
+        guard let image = info[UIImagePickerController.InfoKey.originalImage] as? UIImage else { return }
+        
+        imagePickerCell.largeImageView.image = image
+        self.imagePickerCell = nil
+        
+        dismiss(animated: true, completion: nil)
+    }
+}
+
+// MARK: - ... UINavigationControllerDelegate
+extension ToDoItemTableViewController: UINavigationControllerDelegate {}
 
 // MARK: - ... Custom Methods
 extension ToDoItemTableViewController {
@@ -68,19 +92,74 @@ extension ToDoItemTableViewController {
         return cell is T
     }
     
-    func isItDateCell(at indexPath: IndexPath) -> Bool {
+    func isDateCell(at indexPath: IndexPath) -> Bool {
         guard let cell = tableView.cellForRow(at: indexPath) else { return false }
         return cell is DateCell
     }
     
-    func isItDatePickerCell(at indexPath: IndexPath) -> Bool {
+    func isDatePickerCell(at indexPath: IndexPath) -> Bool {
         guard let cell = tableView.cellForRow(at: indexPath) else { return false }
         return cell is DatePickerCell
     }
     
-    func isItImageCell(at indexPath: IndexPath) -> Bool {
+    func isImageCell(at indexPath: IndexPath) -> Bool {
         guard let cell = tableView.cellForRow(at: indexPath) else { return false }
         return cell is ImageCell
+    }
+    
+    func camera(cell: ImageCell) {
+        let status = PHPhotoLibrary.authorizationStatus()
+        
+        switch status {
+        case .authorized:
+            break
+        case .notDetermined:
+            PHPhotoLibrary.requestAuthorization { status in
+                guard status == .authorized else {
+                    print(#function, "User did not allow to access the photos")
+                    return
+                }
+                self.camera(cell: cell)
+            }
+            return
+        case .restricted:
+            print(#function, "User does not have access to photos")
+            return
+        case .denied:
+            print(#function, "User has denied access to photos")
+            return
+        }
+        
+        let imagePicker = UIImagePickerController()
+        imagePicker.delegate = self
+        
+        let alertController = UIAlertController(
+            title: "Choose image source",
+            message: nil,
+            preferredStyle: .actionSheet
+        )
+        
+        let cancelAction = UIAlertAction(title: "Cancel", style: .cancel)
+        alertController.addAction(cancelAction)
+        
+        if UIImagePickerController.isSourceTypeAvailable(.camera) {
+            let cameraAction = UIAlertAction(title: "Camera", style: .default) { action in
+                imagePicker.sourceType = .camera
+                self.present(imagePicker, animated: true)
+            }
+            alertController.addAction(cameraAction)
+        }
+        
+        if UIImagePickerController.isSourceTypeAvailable(.photoLibrary) {
+            let photoLibraryAction = UIAlertAction(title: "Photo Library", style: .default) { action in
+                imagePicker.sourceType = .photoLibrary
+                self.present(imagePicker, animated: true)
+            }
+            alertController.addAction(photoLibraryAction)
+        }
+        
+        imagePickerCell = cell
+        present(alertController, animated: true)
     }
     
     func configureCellFor(indexPath: IndexPath, with value: Any?) -> UITableViewCell {
